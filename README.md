@@ -112,8 +112,8 @@ Jupyter Notebook or JupyterLab
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/retail-feature-engineering.git
-cd retail-feature-engineering
+git clone https://github.com/KishoreMuruganantham/retail-feature-engineering-analysis.git
+cd retail-feature-engineering-analysis
 ```
 
 2. **Create a virtual environment** (recommended)
@@ -506,10 +506,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👤 Author
 
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
+**Kishore Muruganantham**
+- GitHub: [@KishoreMuruganantham](https://github.com/KishoreMuruganantham)
+- Repository: [retail-feature-engineering-analysis](https://github.com/KishoreMuruganantham/retail-feature-engineering-analysis)
 
 ## 🙏 Acknowledgments
 
