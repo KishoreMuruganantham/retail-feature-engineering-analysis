@@ -5,7 +5,7 @@
 [![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-orange.svg)](https://jupyter.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> A comprehensive retail analytics solution for feature engineering, temporal data processing, and sales forecasting with robust leakage prevention mechanisms.
+> A comprehensive retail analytics solution for feature engineering, temporal data processing, and sales forecasting with robust leakage prevention mechanisms
 
 ## 📋 Table of Contents
 
