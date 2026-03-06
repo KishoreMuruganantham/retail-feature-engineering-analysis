@@ -28,6 +28,7 @@
 ## 🎯 Overview
 
 This project demonstrates advanced feature engineering techniques for retail sales analysis, focusing on:
+
 - **Temporal data handling** with strict train-validation-test splits
 - **Leakage prevention** in predictive modeling
 - **Feature scaling and encoding** best practices
@@ -38,6 +39,7 @@ The analysis is built for real-world retail scenarios where accurate sales forec
 ## ✨ Features
 
 ### Core Capabilities
+
 - 🔧 **Advanced Feature Engineering**:log transformations, sales-per-employee metrics, categorical binning
 - 📊 **Statistical Transformations**: Z-score standardization, one-hot encoding
 - 🛡️ **Leakage Control**: Temporal splits with strict preprocessing boundaries
@@ -45,27 +47,30 @@ The analysis is built for real-world retail scenarios where accurate sales forec
 - 🎯 **Model-Ready Outputs**: Clean datasets optimized for ML pipelines
 
 ### Key Engineered Features
-| Feature | Description | Type |
-|---------|-------------|------|
-| `log_weekly_sales` | Log-transformed sales (analysis only) | Continuous |
-| `sales_per_employee` | Revenue per employee (analysis only) | Continuous |
-| `month` | Extracted month from date | Categorical (1-12) |
-| `day` | Day of week | Categorical (0-6) |
-| `store_rating_category` | Low/Medium/High store rating buckets | Categorical |
-| `temperature_scaled` | Z-score normalized temperature | Continuous |
-| `fuel_price_scaled` | Z-score normalized fuel price | Continuous |
-| `cpi_scaled` | Z-score normalized CPI | Continuous |
-| `unemployment_scaled` | Z-score normalized unemployment | Continuous |
+
+| Feature                 | Description                           | Type               |
+| ----------------------- | ------------------------------------- | ------------------ |
+| `log_weekly_sales`      | Log-transformed sales (analysis only) | Continuous         |
+| `sales_per_employee`    | Revenue per employee (analysis only)  | Continuous         |
+| `month`                 | Extracted month from date             | Categorical (1-12) |
+| `day`                   | Day of week                           | Categorical (0-6)  |
+| `store_rating_category` | Low/Medium/High store rating buckets  | Categorical        |
+| `temperature_scaled`    | Z-score normalized temperature        | Continuous         |
+| `fuel_price_scaled`     | Z-score normalized fuel price         | Continuous         |
+| `cpi_scaled`            | Z-score normalized CPI                | Continuous         |
+| `unemployment_scaled`   | Z-score normalized unemployment       | Continuous         |
 
 ## 📊 Dataset Description
 
 ### Source Data
+
 - **Total Records**: 1,000 observations
 - **Stores**: 20 unique retail locations
 - **Time Period**: January 1, 2023 to December 29, 2024 (104 weeks)
 - **Granularity**: Weekly aggregated sales data
 
 ### Raw Features
+
 ```
 store_id            : String identifier for each store (Store_1 to Store_20)
 week_start_date     : Start date of the week (DD-MM-YYYY format)
@@ -81,6 +86,7 @@ unemployment        : Regional unemployment rate
 ```
 
 ### Data Quality
+
 - ✅ **No missing values** in core numeric fields
 - ✅ **No zero-employee rows** detected
 - ✅ **Complete temporal coverage** across all stores
@@ -103,6 +109,7 @@ retail-feature-engineering/
 ## 🚀 Installation
 
 ### Prerequisites
+
 ```bash
 Python 3.8+
 Jupyter Notebook or JupyterLab
@@ -111,23 +118,27 @@ Jupyter Notebook or JupyterLab
 ### Setup
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/KishoreMuruganantham/retail-feature-engineering-analysis.git
 cd retail-feature-engineering-analysis
 ```
 
 2. **Create a virtual environment** (recommended)
+
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
 3. **Install dependencies**
+
 ```bash
 pip install pandas numpy jupyter matplotlib seaborn scikit-learn
 ```
 
 Alternatively, create a `requirements.txt`:
+
 ```txt
 pandas>=1.5.0
 numpy>=1.23.0
@@ -138,6 +149,7 @@ scikit-learn>=1.2.0
 ```
 
 Then install:
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -147,6 +159,7 @@ pip install -r requirements.txt
 ### Running the Analysis
 
 1. **Launch Jupyter Notebook**
+
 ```bash
 jupyter notebook retail_feature_engineering_submission.ipynb
 ```
@@ -162,6 +175,7 @@ jupyter notebook retail_feature_engineering_submission.ipynb
    - `retail_model_ready.csv` - Model-ready dataset (leakage features removed)
 
 ### Quick Start Example
+
 ```python
 import pandas as pd
 
@@ -181,6 +195,7 @@ test_data = df[df['dataset_split'] == 'test']
 ## 🔧 Feature Engineering Pipeline
 
 ### 1. **Temporal Feature Extraction**
+
 ```python
 # Month extraction (1-12)
 df['month'] = pd.to_datetime(df['week_start_date']).dt.month
@@ -190,6 +205,7 @@ df['day'] = pd.to_datetime(df['week_start_date']).dt.dayofweek
 ```
 
 ### 2. **Derived Metrics**
+
 ```python
 # Log transformation of target (analysis only - LEAKAGE RISK)
 df['log_weekly_sales'] = np.log1p(df['weekly_sales'])
@@ -199,6 +215,7 @@ df['sales_per_employee'] = df['weekly_sales'] / df['num_employees']
 ```
 
 ### 3. **Categorical Binning**
+
 ```python
 # Store rating categories
 bins = [0, 3.33, 6.67, 10]
@@ -207,6 +224,7 @@ df['store_rating_category'] = pd.cut(df['store_rating'], bins=bins, labels=label
 ```
 
 ### 4. **Standardization (Fit on Training Only)**
+
 ```python
 from sklearn.preprocessing import StandardScaler
 
@@ -223,6 +241,7 @@ test_scaled = scaler.transform(test_data[features_to_scale])
 ```
 
 ### 5. **One-Hot Encoding (Categories Learned from Training)**
+
 ```python
 # Encode categorical variables
 categorical_features = ['holiday_flag', 'month', 'store_id', 'store_rating_category']
@@ -236,6 +255,7 @@ val_encoded = val_encoded.reindex(columns=train_encoded.columns, fill_value=0)
 ```
 
 ### 6. **Collinearity Removal**
+
 ```python
 # Remove features with |correlation| > 0.8
 correlation_matrix = train_data[numeric_features].corr()
@@ -244,7 +264,7 @@ high_corr_pairs = []
 for i in range(len(correlation_matrix.columns)):
     for j in range(i+1, len(correlation_matrix.columns)):
         if abs(correlation_matrix.iloc[i, j]) > 0.8:
-            high_corr_pairs.append((correlation_matrix.columns[i], 
+            high_corr_pairs.append((correlation_matrix.columns[i],
                                    correlation_matrix.columns[j]))
 ```
 
@@ -265,6 +285,7 @@ The project uses a strict **chronological split** to prevent data leakage:
 ```
 
 ### Implementation
+
 ```python
 # Define temporal boundaries
 development_mask = df['week_start_date'] < pd.Timestamp('2024-01-01')
@@ -287,23 +308,25 @@ test_df = df[test_mask]
 2. **`sales_per_employee`** - Directly uses `weekly_sales` in calculation
 
 These features are:
+
 - ✅ Included in `retail_processed_full.csv` for exploratory analysis
 - ❌ **Excluded** from `retail_model_ready.csv` for predictive modeling
 
 ## 🔄 Transformations
 
 ### Adstock Transformation
+
 Models the **decaying effect** of past advertising or events on current sales.
 
 ```python
 def adstock_transform(series, decay_rate=0.5):
     """
     Apply adstock transformation with exponential decay.
-    
+
     Parameters:
     - series: Input time series
     - decay_rate: Decay factor (0-1), where 0.5 = 50% retention
-    
+
     Returns:
     - Transformed series with cumulative decayed effects
     """
@@ -316,18 +339,19 @@ def adstock_transform(series, decay_rate=0.5):
 **Use Case**: Calculating the lasting impact of marketing campaigns on sales.
 
 ### Lag Features
+
 Creates **shifted time-series features** for forecasting models.
 
 ```python
 def create_lag_features(df, column, lags=[1, 2, 7]):
     """
     Create lagged features for time-series analysis.
-    
+
     Parameters:
     - df: DataFrame with time-sorted data
     - column: Column to create lags for
     - lags: List of lag periods (e.g., [1, 2, 7] for 1, 2, and 7 weeks)
-    
+
     Returns:
     - DataFrame with new lag columns
     """
@@ -337,6 +361,7 @@ def create_lag_features(df, column, lags=[1, 2, 7]):
 ```
 
 **Example Application**:
+
 ```python
 # Create temperature lag features
 df = create_lag_features(df, 'temperature', lags=[1, 2, 7])
@@ -347,9 +372,11 @@ df = create_lag_features(df, 'temperature', lags=[1, 2, 7])
 ## 📤 Outputs
 
 ### 1. `retail_processed_full.csv`
+
 **Purpose**: Complete dataset for exploratory analysis and validation
 
 **Contents**:
+
 - All original features
 - All engineered features (including leakage features)
 - Scaled continuous variables
@@ -357,15 +384,18 @@ df = create_lag_features(df, 'temperature', lags=[1, 2, 7])
 - `dataset_split` column ('train', 'validation', 'test')
 
 **Use Cases**:
+
 - ✅ Exploratory data analysis
 - ✅ Visualization and reporting
 - ✅ Understanding feature relationships
 - ❌ Direct use in predictive models (contains leakage features)
 
 ### 2. `retail_model_ready.csv`
+
 **Purpose**: ML-ready dataset for predictive modeling
 
 **Contents**:
+
 - Safe predictor features only
 - Scaled continuous variables
 - One-hot encoded categorical variables
@@ -373,16 +403,19 @@ df = create_lag_features(df, 'temperature', lags=[1, 2, 7])
 - `dataset_split` column
 
 **Excluded Features**:
+
 - ❌ `log_weekly_sales` (leakage)
 - ❌ `sales_per_employee` (leakage)
 
 **Use Cases**:
+
 - ✅ Training forecasting models
 - ✅ Cross-validation experiments
 - ✅ Production deployment
 - ✅ Model benchmarking
 
 ### Usage Example
+
 ```python
 # Load model-ready data
 model_data = pd.read_csv('retail_model_ready.csv')
@@ -405,6 +438,7 @@ y_test = y[model_data['dataset_split'] == 'test']
 ## 🔬 Technical Implementation
 
 ### Key Libraries
+
 - **pandas**: Data manipulation and feature engineering
 - **numpy**: Numerical computations
 - **scikit-learn**: Scaling, encoding, and preprocessing
@@ -419,6 +453,7 @@ y_test = y[model_data['dataset_split'] == 'test']
 5. **Scalability**: Pipeline can handle additional stores or time periods
 
 ### Performance Considerations
+
 - ⚡ Efficient pandas operations (vectorized where possible)
 - 💾 Memory-optimized data types
 - 🔄 Streamlined preprocessing pipeline
@@ -428,13 +463,14 @@ y_test = y[model_data['dataset_split'] == 'test']
 
 ### Dataset Statistics
 
-| Split | Records | Weeks | Date Range | Percentage |
-|-------|---------|-------|------------|------------|
-| **Train** | ~620 | ~42 | 2023-01-01 to 2023-10-15 | 62% |
-| **Validation** | ~180 | ~10 | 2023-10-15 to 2023-12-31 | 18% |
-| **Test** | ~200 | ~52 | 2024-01-01 to 2024-12-29 | 20% |
+| Split          | Records | Weeks | Date Range               | Percentage |
+| -------------- | ------- | ----- | ------------------------ | ---------- |
+| **Train**      | ~620    | ~42   | 2023-01-01 to 2023-10-15 | 62%        |
+| **Validation** | ~180    | ~10   | 2023-10-15 to 2023-12-31 | 18%        |
+| **Test**       | ~200    | ~52   | 2024-01-01 to 2024-12-29 | 20%        |
 
 ### Feature Summary
+
 - **Total Engineered Features**: 15+
 - **One-Hot Encoded Features**: 40+ (depending on categories)
 - **Scaled Continuous Features**: 4
@@ -442,6 +478,7 @@ y_test = y[model_data['dataset_split'] == 'test']
 - **Model-Ready Features**: ~50-60 columns
 
 ### Validation Insights
+
 - ✅ No missing values after preprocessing
 - ✅ All categorical encodings properly aligned across splits
 - ✅ Scaling parameters learned exclusively from training data
@@ -494,6 +531,7 @@ Contributions are welcome! Please follow these guidelines:
 5. Open a **Pull Request**
 
 ### Contribution Areas
+
 - 🐛 Bug fixes
 - ✨ New feature engineering techniques
 - 📚 Documentation improvements
@@ -507,6 +545,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👤 Author
 
 **Kishore Muruganantham**
+
 - GitHub: [@KishoreMuruganantham](https://github.com/KishoreMuruganantham)
 - Repository: [retail-feature-engineering-analysis](https://github.com/KishoreMuruganantham/retail-feature-engineering-analysis)
 
@@ -519,11 +558,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📚 References
 
 ### Key Concepts
+
 - [Feature Engineering Guide](https://scikit-learn.org/stable/modules/preprocessing.html)
 - [Time Series Cross-Validation](https://scikit-learn.org/stable/modules/cross_validation.html#time-series-split)
 - [Avoiding Data Leakage](https://machinelearningmastery.com/data-leakage-machine-learning/)
 
 ### Tools & Libraries
+
 - [Pandas Documentation](https://pandas.pydata.org/docs/)
 - [Scikit-learn User Guide](https://scikit-learn.org/stable/user_guide.html)
 - [Jupyter Notebook](https://jupyter.org/)
